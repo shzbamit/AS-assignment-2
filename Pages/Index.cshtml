@@ -1,0 +1,80 @@
+﻿@page
+@model WebApplication1.Pages.IndexModel
+
+@inject IHttpContextAccessor contxt
+
+@{
+    ViewData["Title"] = "Homepage";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome, @Model.UserName</h1>
+
+    <p>Welcome to the home page. Below are your details:</p>
+
+    <div>
+        <h4>Your Info:</h4>
+        <p><strong>Username:</strong> @Model.UserName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+    </div>
+
+    <div>
+        <h4>Your Credit Card Information:</h4>
+
+        <!-- Display Encrypted Credit Card Initially -->
+        @if (!string.IsNullOrEmpty(Model.EncryptedCreditCard))
+        {
+            <p id="encryptedCreditCard"><strong>Encrypted Credit Card Number:</strong> @Model.EncryptedCreditCard</p>
+        }
+        else
+        {
+            <p><strong>Encrypted Credit Card Number:</strong> No encrypted card data available.</p>
+        }
+
+        <!-- Decrypted Credit Card Number (Hidden initially) -->
+        <p id="decryptedCreditCard" style="display: none;">
+            <strong>Decrypted Credit Card Number:</strong> @Model.DecryptedCreditCard
+        </p>
+
+        <button id="toggleCreditCard" onclick="toggleCreditCard()">Show Decrypted Credit Card</button>
+    </div>
+
+    <!-- Change Password Page -->
+    <form method="get" asp-page="ChangePassword">
+        <button type="submit" class="btn btn-warning">Change Password</button>
+    </form>
+
+
+    <!-- Logout Button -->
+    <form method="post" asp-page-handler="Logout">
+        <button type="submit" class="btn btn-danger mt-3">Logout</button>
+    </form>
+
+
+</div>
+
+<script type="text/javascript">
+    function toggleCreditCard() {
+        var encryptedCard = document.getElementById("encryptedCreditCard");
+        var decryptedCard = document.getElementById("decryptedCreditCard");
+        var button = document.getElementById("toggleCreditCard");
+
+        if (decryptedCard.style.display === "none") {
+            decryptedCard.style.display = "block";
+            encryptedCard.style.display = "none";
+            button.innerText = "Show Encrypted Credit Card";
+        } else {
+            decryptedCard.style.display = "none";
+            encryptedCard.style.display = "block";
+            button.innerText = "Show Decrypted Credit Card";
+        }
+    }
+</script>
+<script>
+    setTimeout(function () {
+        alert("Session expired! Redirecting to login...");
+        window.location.href = "/Login"; // Redirect to login page
+    }, 60000); // 60,000ms = 1 minute
+</script>
+
+

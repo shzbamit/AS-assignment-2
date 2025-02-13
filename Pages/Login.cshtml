@@ -1,0 +1,109 @@
+﻿@page
+@model WebApplication1.Pages.LoginModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Login</h1>
+
+            <!-- Display Success Message if exists -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.LockoutMessage))
+            {
+                <div id="lockoutMessage" class="alert alert-danger">
+                    @Model.LockoutMessage
+                </div>
+
+                <script>
+                    let lockoutMessage = document.getElementById("lockoutMessage");
+                    function updateLockoutTimer() {
+                        let message = lockoutMessage.innerText;
+                        let minutes = parseInt(message.match(/\d+/)[0]);
+
+                        if (minutes > 0) {
+                            let interval = setInterval(function () {
+                                minutes--;
+                                lockoutMessage.innerText = `Your account is locked. Try again in ${minutes} minutes.`;
+
+                                if (minutes <= 0) {
+                                    clearInterval(interval);
+                                    lockoutMessage.innerText = "You can now attempt to log in.";
+                                }
+                            }, 60000); // Update every 1 minute
+                        }
+                    }
+                    updateLockoutTimer();
+                </script>
+            }
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            <form method="post" id="loginForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="ReCaptchaToken" asp-for="ReCaptchaToken" />
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="LModel.Email">Email Address</label>
+                    <input type="email" asp-for="LModel.Email" class="form-control" required />
+                    <span asp-validation-for="LModel.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="LModel.Password">Password</label>
+                    <input type="password" asp-for="LModel.Password" class="form-control" required />
+                    <span asp-validation-for="LModel.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+
+            <!-- OTP Form (hidden initially) -->
+            <div id="otpForm" style="display:none;">
+                <label for="otp">Enter OTP sent to your email</label>
+                <input type="text" id="otp" name="otp" required /><br>
+                <button type="submit" id="verifyOtpBtn">Verify OTP</button>
+            </div>
+
+            <!-- Forget Password Button -->
+            <form method="post" asp-page="ForgetPassword">
+                <button type="submit" class="btn btn-danger mt-3">Forget Password</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6Lf_xdUqAAAAAPAOVo8xGhmH2IzqH2uvmmnY6DhU"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Lf_xdUqAAAAAPAOVo8xGhmH2IzqH2uvmmnY6DhU', { action: 'login' }).then(function (token) {
+            document.getElementById('ReCaptchaToken').value = token;
+        });
+    });
+</script>
+

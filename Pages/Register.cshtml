@@ -1,0 +1,86 @@
+﻿@page
+@model WebApplication1.Pages.RegisterModel
+@{
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <h1 class="mb-3">Register</h1>
+
+            <form method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.FullName">Full Name</label>
+                    <input type="text" asp-for="RModel.FullName" class="form-control" />
+                    <span asp-validation-for="RModel.FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.CreditCardNumber">Credit Card No</label>
+                    <input type="text" asp-for="RModel.CreditCardNumber" class="form-control" />
+                    <span asp-validation-for="RModel.CreditCardNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Gender">Gender</label>
+                    <select asp-for="RModel.Gender" class="form-select">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="RModel.Gender" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.MobileNo">Mobile No</label>
+                    <input type="text" asp-for="RModel.MobileNo" class="form-control" />
+                    <span asp-validation-for="RModel.MobileNo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.DeliveryAddress">Delivery Address</label>
+                    <textarea asp-for="RModel.DeliveryAddress" class="form-control"></textarea>
+                    <span asp-validation-for="RModel.DeliveryAddress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Email">Email Address</label>
+                    <input type="email" asp-for="RModel.Email" class="form-control" />
+                    <span asp-validation-for="RModel.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Password">Password</label>
+                    <input type="password" asp-for="RModel.Password" class="form-control" />
+                    <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                    <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.AboutMe">About Me</label>
+                    <textarea asp-for="RModel.AboutMe" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </div>
+            </form>
+            <!-- OTP Form (hidden initially) -->
+            <div id="otpForm" style="display:none;">
+                <label for="otp">Enter OTP sent to your email</label>
+                <input type="text" id="otp" name="otp" required /><br>
+                <button type="submit" id="verifyOtpBtn">Verify OTP</button>
+            </div>
+        </div>
+    </div>
+</div>
+
