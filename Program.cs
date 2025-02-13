@@ -7,7 +7,6 @@ using WebApplication1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using AspNetCoreGeneratedDocument;
 
 var builder = WebApplication.CreateBuilder(args);
 
