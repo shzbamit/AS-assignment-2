@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Model;
 using WebApplication1.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using AspNetCoreGeneratedDocument;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +79,15 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        context.HttpContext.Response.Redirect("/Pages/errors/custom404");
+    }
+});
+
 
 app.UseSession(); // Enable session middleware
 app.UseWebSockets(); // Ensure WebSockets are enabled

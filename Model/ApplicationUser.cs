@@ -29,6 +29,8 @@ namespace WebApplication1.Model
 
         // Add a list to store the last 2 password hashes
         public List<PreviousPasswords> PreviousPasswords { get; set; } = new List<PreviousPasswords>();
+
+        public DateTime LastPasswordChangeDate { get; set; }
     }
 
     // Separate the PreviousPasswords class outside ApplicationUser

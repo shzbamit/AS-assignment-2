@@ -19,6 +19,16 @@
 
         public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword)
         {
+            // Check if the user is attempting to change their password too soon (minimum password age)
+            var timeSinceLastChange = DateTime.UtcNow - user.LastPasswordChangeDate;
+            if (timeSinceLastChange.TotalMinutes < 1) // 1 minute minimum password age
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "You must wait at least 1 minute before changing your password again."
+                });
+            }
+
             // Check current password
             var checkCurrentPassword = await _userManager.CheckPasswordAsync(user, currentPassword);
             if (!checkCurrentPassword)
@@ -57,6 +67,9 @@
                 {
                     user.PreviousPasswords.RemoveAt(0); // Remove oldest password
                 }
+
+                // Update the LastPasswordChangeDate after successful change
+                user.LastPasswordChangeDate = DateTime.UtcNow;
 
                 await _userManager.UpdateAsync(user);
             }
