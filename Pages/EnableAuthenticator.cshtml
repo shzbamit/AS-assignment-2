@@ -1,0 +1,26 @@
+﻿@page
+@model WebApplication1.Pages.EnableAuthenticatorModel
+@{
+    ViewData["Title"] = "Enable Two-Factor Authentication";
+}
+
+<h2>Enable Google Authenticator</h2>
+<p>QRCodeUri: @Model.QRCodeUri</p>
+
+<p>Enter this code manually in Google Authenticator: <strong>@Model.SecretKey</strong></p>
+
+@if (string.IsNullOrEmpty(Model.QRCodeUri))
+{
+    <p>Error: QRCodeUri is empty or null.</p>
+}
+else
+{
+    <p>Scan the QR Code below using the Google Authenticator app:</p>
+    <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=@Model.QRCodeUri" />
+}
+
+<form method="post" asp-page-handler="Continue">
+    <button type="submit" class="btn btn-success">Continue</button>
+</form>
+
+

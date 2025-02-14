@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,8 @@ using WebApplication1.Model;
 using WebApplication1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using OtpSharp; // Google Authenticator package
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 // Register Identity services with AuthDbContext
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders(); // Enables 2FA token providers
 
 builder.Services.ConfigureApplicationCookie(config =>
 {
@@ -63,12 +64,15 @@ builder.Services.AddScoped<WebApplication1.Services.IEmailSender, WebApplication
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
+// 🔥 Enable Two-Factor Authentication with Google Authenticator
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
-    options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-    options.Lockout.AllowedForNewUsers = true;
+    options.SignIn.RequireConfirmedAccount = true; // Users must confirm email before logging in
+    options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider; // Enable Google Authenticator
 });
+
+// Register the GoogleAuthenticator service (used for QR Code generation)
+builder.Services.AddScoped<GoogleAuthenticator>();
 
 var app = builder.Build();
 
@@ -86,7 +90,6 @@ app.UseStatusCodePages(async context =>
         context.HttpContext.Response.Redirect("/Pages/errors/custom404");
     }
 });
-
 
 app.UseSession(); // Enable session middleware
 app.UseWebSockets(); // Ensure WebSockets are enabled

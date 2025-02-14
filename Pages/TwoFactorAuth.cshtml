@@ -1,0 +1,32 @@
+﻿@page
+@model WebApplication1.Pages.TwoFactorAuthModel
+@{
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Two-Factor Authentication</h1>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Enter OTP</label>
+                    <!-- Bind the OTP input field to the Otp property in the model -->
+                    <input type="text" class="form-control" asp-for="Otp" required />
+                    <span asp-validation-for="Otp" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Verify OTP</button>
+                </div>
+
+                @if (Model.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        @Model.ErrorMessage
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>

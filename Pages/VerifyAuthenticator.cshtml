@@ -1,0 +1,13 @@
+﻿@page
+@model WebApplication1.Pages.VerifyAuthenticatorModel
+@{
+    ViewData["Title"] = "Verify Authenticator";
+}
+
+<h2>Verify Google Authenticator</h2>
+
+<form method="post">
+    <label>Enter the 6-digit code from Google Authenticator:</label>
+    <input type="text" asp-for="VerificationCode" class="form-control" required maxlength="6" />
+    <button type="submit" class="btn btn-primary mt-2">Verify</button>
+</form>

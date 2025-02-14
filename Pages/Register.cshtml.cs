@@ -48,6 +48,10 @@ namespace WebApplication1.Pages
                 var result = await userManager.CreateAsync(user, RModel.Password);
                 if (result.Succeeded)
                 {
+                    // Automatically mark email as confirmed
+                    user.EmailConfirmed = true;
+                    await userManager.UpdateAsync(user); // Update the user to reflect email confirmation
+
                     await signInManager.SignInAsync(user, false);
 
                     // Store user info in session

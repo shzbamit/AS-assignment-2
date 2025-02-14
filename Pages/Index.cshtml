@@ -39,16 +39,35 @@
         <button id="toggleCreditCard" onclick="toggleCreditCard()">Show Decrypted Credit Card</button>
     </div>
 
-    <!-- Change Password Page -->
-    <form method="get" asp-page="ChangePassword">
-        <button type="submit" class="btn btn-warning">Change Password</button>
-    </form>
+    <div>
+        <h2>2 Step Verification</h2>
+        @if (Model.Is2FAEnabled)
+        {
+            <p>Two-Factor Authentication is <strong>Enabled</strong>.</p>
+            <form method="post" asp-page-handler="Disable2FA">
+                <button type="submit" class="btn btn-danger">Disable 2 Step Verification</button>
+            </form>
+        }
+        else
+        {
+            <p>Two-Factor Authentication is <strong>Disabled</strong>.</p>
+            <a asp-page="EnableAuthenticator" class="btn btn-primary">Enable 2 Step Verification</a>
+        }
+    </div>
 
+    <div>
+        <!-- Change Password Page -->
+        <form method="get" asp-page="ChangePassword">
+            <button type="submit" class="btn btn-warning">Change Password</button>
+        </form>
+    </div>
 
-    <!-- Logout Button -->
-    <form method="post" asp-page-handler="Logout">
-        <button type="submit" class="btn btn-danger mt-3">Logout</button>
-    </form>
+    <div>
+        <!-- Logout Button -->
+        <form method="post" asp-page-handler="Logout">
+            <button type="submit" class="btn btn-danger mt-3">Logout</button>
+        </form>
+    </div>
 
 
 </div>
