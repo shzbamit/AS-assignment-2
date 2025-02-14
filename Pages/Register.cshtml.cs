@@ -58,6 +58,11 @@ namespace WebApplication1.Pages
                     HttpContext.Session.SetString("UserId", user.Id);
                     HttpContext.Session.SetString("UserName", user.UserName);
                     HttpContext.Session.SetString("Email", user.Email);
+                    HttpContext.Session.SetString("FullName", user.FullName);
+                    HttpContext.Session.SetString("Gender", user.Gender);
+                    HttpContext.Session.SetString("MobileNo", user.MobileNo);
+                    HttpContext.Session.SetString("DeliveryAddress", user.DeliveryAddress);
+                    HttpContext.Session.SetString("AboutMe", user.AboutMe);
 
                     // Store encrypted credit card in session
                     HttpContext.Session.SetString("EncryptedCreditCard", user.EncryptedCreditCardNumber);

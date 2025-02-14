@@ -35,6 +35,7 @@ namespace WebApplication1.Pages
             if (user == null)
             {
                 // User not found, handle the case (you can redirect to a page with an error message)
+                
                 return RedirectToPage("Login");
             }
 
@@ -45,6 +46,9 @@ namespace WebApplication1.Pages
 
             // Send the reset email to the user's email
             await _emailSender.SendEmailAsync(Email, "Reset Your Password", message);
+
+            // Add a success message to be shown on the Login page
+            TempData["SuccessMessage"] = "Email successfully sent, please check your mail.";
 
             return RedirectToPage("ResetPassword");
         }

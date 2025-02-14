@@ -5,6 +5,7 @@ namespace WebApplication1.Pages
     using Microsoft.AspNetCore.Identity;
     using WebApplication1.Model;
     using System.Threading.Tasks;
+    using System.ComponentModel.DataAnnotations;
 
     public class ResetPasswordModel : PageModel
     {
@@ -22,9 +23,14 @@ namespace WebApplication1.Pages
         public string Email { get; set; }
 
         [BindProperty]
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 12)]
+        [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
         [BindProperty]
+        [DataType(DataType.Password)]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public IActionResult OnGet(string token, string email)
@@ -56,6 +62,8 @@ namespace WebApplication1.Pages
             var result = await _userManager.ResetPasswordAsync(user, Token, NewPassword);
             if (result.Succeeded)
             {
+                // Add a success message to be shown on the Login page
+                TempData["SuccessMessage"] = "Successfully changed password, please login again.";
                 return RedirectToPage("Login");
             }
 

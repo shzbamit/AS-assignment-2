@@ -87,9 +87,12 @@ app.UseStatusCodePages(async context =>
 {
     if (context.HttpContext.Response.StatusCode == 404)
     {
-        context.HttpContext.Response.Redirect("/Pages/errors/custom404");
+        // Redirect to the custom 404 page
+        context.HttpContext.Response.Redirect("/Errors/custom404");
+        await Task.CompletedTask; // Ensure Task is returned
     }
 });
+
 
 app.UseSession(); // Enable session middleware
 app.UseWebSockets(); // Ensure WebSockets are enabled
@@ -102,5 +105,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+
 
 app.Run();

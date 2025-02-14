@@ -26,6 +26,11 @@ namespace WebApplication1.Pages
 
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string FullName { get; set; }
+        public string Gender { get; set; }
+        public string MobileNo { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string AboutMe { get; set; }
         public string DecryptedCreditCard { get; set; }
         public string EncryptedCreditCard { get; set; }
         public bool Is2FAEnabled { get; set; }
@@ -61,6 +66,11 @@ namespace WebApplication1.Pages
             // Retrieve the user info from session
             UserName = HttpContext.Session.GetString("UserName");
             Email = HttpContext.Session.GetString("Email");
+            FullName = HttpContext.Session.GetString("FullName");
+            Gender = HttpContext.Session.GetString("Gender");
+            MobileNo = HttpContext.Session.GetString("MobileNo");
+            DeliveryAddress = HttpContext.Session.GetString("DeliveryAddress");
+            AboutMe = HttpContext.Session.GetString("AboutMe");
 
             // Retrieve encrypted credit card
             EncryptedCreditCard = HttpContext.Session.GetString("EncryptedCreditCard");
